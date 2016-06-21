@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/troy-lamerton/stream-team#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "handlebars": "^4.0.5"
   }
 }
