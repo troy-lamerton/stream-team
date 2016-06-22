@@ -8,6 +8,7 @@ var PORT = process.env.PORT || 3000
 var io = require('socket.io')(http);
 
 var images = require('./public/sceneCollections/testScenes.json')
+var activeSceneIndex = 0
 
 // app.set('views', __dirname + '/views');
 // app.set('view engine', 'hbs');
@@ -17,25 +18,10 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', function (req, res) {
   var source = fs.readFileSync('views/display.hbs')
   var template =  Handlebars.compile(source.toString())
-
-  res.send(template({imageUrl: 'http://handlebarsjs.com/images/handlebars_logo.png'}))
+  console.log('new client being sent: ', activeSceneIndex)
+  res.send(template(images[activeSceneIndex]))
 
 	// res.render('display', {img: "www.google.com"})
-})
-
-io.on('connection', function(socket){
-  // socket.on('want scene', function(sceneNum){
-  //   io.emit('new scene', images[sceneNum-1])
-  // })
-  socket.on('new scene', function (sceneNum) {
-    console.log('new scene being broadcast')
-    console.log('the new scene: ' + images[sceneNum].slice(0, 10) + '...')
-    socket.broadcast.emit('new scene', images[sceneNum])
-  })
-});
-
-io.on('disconnect', function(socket){
-  console.log('a user disconnected');
 })
 
 /* Dashboard page */
@@ -44,6 +30,16 @@ app.get('/dashboard', function (req, res) {
   var template = Handlebars.compile(source.toString())
   res.send(template({imageUrls: images}))
 })
+
+io.of('/dashboard').on('connection', function(socket){
+  socket.on('set scene', function (sceneIndex) {
+    if (sceneIndex > images.length -1) return;
+    activeSceneIndex = sceneIndex
+    socket.broadcast.emit('new scene', images[sceneIndex])
+    io.of('/').emit('update scene display', images[sceneIndex]);
+  })
+});
+
 
 http.listen(PORT)
 console.log('Server is listening on http://localhost:' + PORT)
