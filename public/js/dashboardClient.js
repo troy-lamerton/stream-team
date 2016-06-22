@@ -17,12 +17,14 @@ function newScene (sceneIndex) {
   socket.emit('set scene', sceneIndex)
 }
 
-function setBackgroundColor (colorCode) {
-  //colorCode will be in the form #______. e.g. #ffffff is white
-
-}
+$('#setBackgroundColor').click(function() {
+  console.log('sending set bg color message. Color being sent is:', colorCode);
+  // var colorCode = $('#backgroundColor').val();
+  // //colorCode will be in the form #______. e.g. #ffffff is white
+  // socket.emit('set background color', colorCode);
+});
 
 // Development use only
 socket.on('update scene display', function (imageUrl) {
   throw new Error('Dashboard is receiving update messages!\nOnly clients on the display page should receive these.')
-})
+});

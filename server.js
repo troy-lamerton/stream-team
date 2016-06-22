@@ -33,10 +33,23 @@ app.get('/dashboard', function (req, res) {
 
 io.of('/dashboard').on('connection', function(socket){
   socket.on('set scene', function (sceneIndex) {
+    // check if sceneIndex corresponds to an image
     if (sceneIndex > images.length -1) return;
     activeSceneIndex = sceneIndex
     socket.broadcast.emit('new scene', images[sceneIndex])
     io.of('/').emit('update scene display', images[sceneIndex]);
+  })
+  socket.on('set background color', function (colorCode) {
+    // check color code is valid
+    console.log('DASH: setting background color')
+    if ( colorCode.slice(1) === "#" 
+      && colorCode.length === 7 || colorCode.length === 4
+      && isNaN(colorCode.slice(1, 7)) ) {
+        console.log('Background color is valid')
+        io.of('/').emit('update background color', colorCode)
+    } else {
+      return
+    }
   })
 });
 
