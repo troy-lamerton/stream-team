@@ -19,8 +19,8 @@ function newScene (sceneIndex) {
 
 $('#setBackgroundColor').click(function() {
   // this code is not running -- ???
-  console.log('sending set bg color message. Color being sent is:', colorCode);
   var colorCode = $('#backgroundColor').val();
+  console.log('sending set bg color message. Color being sent is:', colorCode);
   //colorCode will be in the form #______. e.g. #ffffff is white
   socket.emit('set background color', colorCode);
 });
