@@ -1,38 +1,23 @@
 var express = require('express')
-var fs = require('fs')
-var Handlebars = require('handlebars')
 var app = express()
 var http = require('http').Server(app);
-var PORT = process.env.PORT || 3000
 
 var io = require('socket.io')(http);
 
 var images = require('./public/sceneCollections/testScenes.json')
-var activeSceneIndex = 0
+var activeSceneIndex = 0 // placeholder until a databse is implemented
 
 // app.set('views', __dirname + '/views');
 // app.set('view engine', 'hbs');
+
+var routesFile = require('./routes')
+
+app.use('/app', routesFile)
 app.use(express.static(__dirname + '/public'))
-
-/* Display page */
-app.get('/', function (req, res) {
-  var source = fs.readFileSync('views/display.hbs')
-  var template =  Handlebars.compile(source.toString())
-  console.log('new client being sent: ', activeSceneIndex)
-  res.send(template(images[activeSceneIndex]))
-
-	// res.render('display', {img: "www.google.com"})
-})
-
-/* Dashboard page */
-app.get('/dashboard', function (req, res) {
-  var source = fs.readFileSync('views/dashboard.hbs')
-  var template = Handlebars.compile(source.toString())
-  res.send(template({imageUrls: images}))
-})
 
 io.of('/dashboard').on('connection', function(socket){
   socket.on('set scene', function (sceneIndex) {
+    // @param {Integer} sceneIndex
     // check if sceneIndex corresponds to an image
     if (sceneIndex > images.length -1) return;
     activeSceneIndex = sceneIndex
@@ -41,7 +26,7 @@ io.of('/dashboard').on('connection', function(socket){
   })
   socket.on('set background color', function (colorCode) {
     // check color code is valid
-    console.log('DASH: setting background color')
+    console.log('DASH: setting background color');
     if ( colorCode.slice(1) === "#" 
       && colorCode.length === 7 || colorCode.length === 4
       && isNaN(colorCode.slice(1, 7)) ) {
@@ -54,11 +39,15 @@ io.of('/dashboard').on('connection', function(socket){
 });
 
 
-http.listen(PORT)
-console.log('Server is listening on http://localhost:' + PORT)
+const PORT = process.env.PORT || 3000
+
+if (module.parent === null){
+  http.listen(PORT)
+  console.log('Server is listening on http://localhost:' + PORT)
+}
+
+// the server listens for the dashboard emits which change something
+//  the display page
 
 // io on the server will listen for an emit asking for an image.
-// it will respond with the url to that image
-
-// listen to the dashboard emits and send image url 
-// to people on the display page
+// the server will respond with the url to that image
