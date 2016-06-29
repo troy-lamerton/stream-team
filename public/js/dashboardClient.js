@@ -17,12 +17,14 @@ function newScene (sceneIndex) {
   socket.emit('set scene', sceneIndex)
 }
 
-$('#setBackgroundColor').click(function() {
-  // this code is not running -- ???
-  var colorCode = $('#backgroundColor').val();
-  console.log('sending set bg color message. Color being sent is:', colorCode);
-  //colorCode will be in the form #______. e.g. #ffffff is white
-  socket.emit('set background color', colorCode);
+$( document ).ready(function () {
+  $('#setBackgroundColor').click(function() {
+    // this code is not running -- ???
+    var colorCode = $('#backgroundColor').val();
+    console.log('Sending new background-color to server: ', colorCode);
+    //colorCode will be in the form #______. e.g. #ffffff is white
+    socket.emit('set background color', colorCode);
+  });
 });
 
 // Development use only
