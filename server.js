@@ -9,12 +9,16 @@ var activeSceneIndex = 0 // placeholder until a databse is implemented
 
 // app.set('views', __dirname + '/views');
 // app.set('view engine', 'hbs');
-
-var routesFile = require('./routes')
-
-app.use('/app', routesFile)
 app.use(express.static(__dirname + '/public'))
 
+/* Routes */
+var routesApp = require('./routesApp')
+var routesImages = require('./routesImages')
+
+app.use('/app', routesApp)
+app.use('/images', routesImages)
+
+/* Sockets handle the commands sent between the dashboard, display and the server */
 io.of('/dashboard').on('connection', function(socket){
   socket.on('set scene', function (sceneIndex) {
     // @param {Integer} sceneIndex
@@ -38,15 +42,15 @@ io.of('/dashboard').on('connection', function(socket){
 });
 
 
-const PORT = process.env.PORT || 3000
+const let PORT = process.env.PORT || 3000
 
 if (module.parent === null){
   http.listen(PORT)
   console.log('Server is listening on http://localhost:' + PORT)
 }
 
-// the server listens for the dashboard emits which change something
-//  the display page
-
-// io on the server will listen for an emit asking for an image.
-// the server will respond with the url to that image
+/* http is the running server */
+module.exports = http
+// The dashboard sends an instruction to the server
+// The server checks that the instruction is valid
+// If it is valid, it sends it to people viewing the display page
