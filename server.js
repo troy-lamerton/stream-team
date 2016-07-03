@@ -1,3 +1,8 @@
+/* 
+ * The dashboard sends an instruction to the server
+ * The server checks that the instruction is valid
+ * If it is valid, it sends it to people viewing the display page
+ */
 var express = require('express')
 var app = express()
 var http = require('http').Server(app);
@@ -42,7 +47,8 @@ io.of('/dashboard').on('connection', function(socket){
 });
 
 
-const let PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
+
 
 if (module.parent === null){
   http.listen(PORT)
@@ -51,6 +57,3 @@ if (module.parent === null){
 
 /* http is the running server */
 module.exports = http
-// The dashboard sends an instruction to the server
-// The server checks that the instruction is valid
-// If it is valid, it sends it to people viewing the display page
