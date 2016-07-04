@@ -1,6 +1,8 @@
 var express = require('express')
 var router = express.Router()
 
+var knex = require('knex')
+
 var images = require('./public/sceneCollections/testScenes.json')
 
 /* RESTful API for interfacing with the images table in the database */
