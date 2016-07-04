@@ -4,11 +4,11 @@ var io = require('socket.io')(httpServer);
 io.of('/dashboard').on('connection', function(socket){
   socket.on('set scene', function (sceneIndex) {
     // @param {Integer} sceneIndex
-    // check if sceneIndex corresponds to an image
-    if (sceneIndex > images.length -1) return;
+    // check if sceneIndex corresponds to an scene
+    if (sceneIndex > scenes.length -1) return;
     activeSceneIndex = sceneIndex
-    socket.broadcast.emit('new scene', images[sceneIndex])
-    io.of('/').emit('update scene display', images[sceneIndex]);
+    socket.broadcast.emit('new scene', scenes[sceneIndex])
+    io.of('/').emit('update scene display', scenes[sceneIndex]);
   })
   socket.on('set background color', function (colorCode) {
     // check color code is valid

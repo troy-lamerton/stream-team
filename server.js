@@ -9,7 +9,7 @@ var http = require('http').Server(app);
 
 var io = require('socket.io')(http);
 
-var images = require('./public/sceneCollections/testScenes.json')
+var scenes = require('./public/sceneCollections/testScenes.json')
 var activeSceneIndex = 0 // placeholder until a databse is implemented
 
 // app.set('views', __dirname + '/views');
@@ -18,20 +18,20 @@ app.use(express.static(__dirname + '/public'))
 
 /* Routes */
 var routesApp = require('./routesApp')
-var routesImages = require('./routesImages')
+var routesScenes = require('./routesScenes')
 
 app.use('/app', routesApp)
-app.use('/images', routesImages)
+app.use('/scenes', routesScenes)
 
 /* Sockets handle the commands sent between the dashboard, display and the server */
 io.of('/dashboard').on('connection', function(socket){
   socket.on('set scene', function (sceneIndex) {
     // @param {Integer} sceneIndex
     // check if sceneIndex corresponds to an image
-    if (sceneIndex > images.length -1) return;
+    if (sceneIndex > scenes.length -1) return;
     activeSceneIndex = sceneIndex
-    socket.broadcast.emit('new scene', images[sceneIndex])
-    io.of('/').emit('update scene display', images[sceneIndex]);
+    socket.broadcast.emit('new scene', scenes[sceneIndex])
+    io.of('/').emit('update scene display', scenes[sceneIndex]);
   })
   socket.on('set background color', function (colorCode) {
     // check color code is valid

@@ -1,0 +1,24 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" type="text/css">
+  
+  <link rel="stylesheet" href="/dashboard.css" type="text/css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+</head>
+<body>
+  <div id="scenes">
+  <h1>All Scenes</h1>
+    {{#each allScenes}}
+    <div>
+      <h2>{{this.id}}| {{this.title}}</h2>
+      <img src="{{this.url}}" alt="Scene image preview" onclick="newScene({{@index}})"/>
+      <img src="{{this.imageBase64}}" alt="Scene image preview" onclick="newScene({{@index}})"/>
+      <p>
+        <span class="bold">Description:</span> {{this.description}}
+      </p>
+    </div>
+    {{/each}}
+  </div>
+</body>
+</html>
