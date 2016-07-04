@@ -9,7 +9,7 @@ var knex = require('knex')
 /* read all scenes from database */
 router.get('/', function (req, res) {
   console.log('send all the scenes')
-  console.log(knex.select().table('scenes'))
+  console.log(knex('scenes').select())
   res.end()
   // res.send(allTheScenes)
 })
