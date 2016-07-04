@@ -9,16 +9,13 @@ var http = require('http').Server(app);
 
 var io = require('socket.io')(http);
 
-var scenes = require('./public/sceneCollections/testScenes.json')
-var activeSceneIndex = 0 // placeholder until a databse is implemented
-
 // app.set('views', __dirname + '/views');
 // app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'))
 
 /* Routes */
-var routesApp = require('./routesApp')
-var routesScenes = require('./routesScenes')
+var routesApp = require('./routes/app')
+var routesScenes = require('./routes/scenes')
 
 app.use('/app', routesApp)
 app.use('/scenes', routesScenes)
