@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
   console.log('send all the scenes-->')
   knex('scenes').select()
     .then(sendScenes(res))
-    .catch(logError)
+    .catch(logError, res)
     .finally(cleanUp)
   // res.send(allTheScenes)
 })
@@ -32,7 +32,10 @@ function sendScenes (res) {
 /* read a specific scene from the database */
 router.get('/:id', function (req, res) {
   console.log('get scene with id:-->', req.params.id)
-  res.end()
+  knex('scenes').where('id', parseInt(req.params.id)).select()
+    .then(sendScenes(res))
+    .catch(logError, res)
+    .finally(cleanUp)
   // res.send(thatOneScene)
 })
 
@@ -60,12 +63,13 @@ router.delete('/:id', function (req, res) {
   // res.send an error or OK (200)
 })
 
-function logError (err) {
+function logError (err, res) {
   console.error(err)
+  res.status(500).send()
 }
 
 function cleanUp () {
-  console.log('<---Request complete')
+  console.log('...request complete')
   // knex.destroy()
 }
 
