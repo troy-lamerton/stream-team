@@ -5,6 +5,8 @@ var fs = require('fs')
 var knexConfig = require('../knexfile').development
 var knex = require('knex')(knexConfig)
 
+var tableName = 'scenes'
+
 /* RESTful API for interfacing with the scenes table in the database */
 /* this resource is located at /scenes */
 
@@ -16,7 +18,7 @@ function logScenes (scenes) {
 /* read all scenes from database */
 router.get('/', function (req, res) {
   console.log('send all the scenes-->')
-  knex('scenes').select()
+  knex(tableName).select()
     .then(sendScenes(res))
     .catch(logError, res)
     .finally(cleanUp)
@@ -32,7 +34,7 @@ function sendScenes (res) {
 /* read a specific scene from the database */
 router.get('/:id', function (req, res) {
   console.log('get scene with id:-->', req.params.id)
-  knex('scenes').where('id', parseInt(req.params.id)).select()
+  knex(tableName).where('id', parseInt(req.params.id)).select()
     .then(sendScenes(res))
     .catch(logError, res)
     .finally(cleanUp)
@@ -41,22 +43,26 @@ router.get('/:id', function (req, res) {
 
 /* check the data is valid
 create a new scene row in the scenes table */
-router.put('/', function (req, res) {
+router.post('/', function (req, res) {
   console.log('create new scene row-->')
+  console.log('body of req:', req.query)
+  // file upload content is in a different format!
+  // watch out for multipart/form-data
+  // knex(tableName)
   res.end()
   // res.send an error or OK (200)
 })
 
 /* check data is valid
 update specific scene with this data */
-router.post('/:id', function (req, res) {
+router.put('/:id', function (req, res) {
   console.log('update scene with id:-->', req.params.id)
   res.end()
   // res.send an error or OK (200)
 })
 
 /* drop the specified scene row if it exists */
-router.delete('/:id', function (req, res) {
+router['delete']('/:id', function (req, res) {
   console.log('delete the scene with id:', req.params.id)
   res.end()
   // drop the specified scene row if it exists
