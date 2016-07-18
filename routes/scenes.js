@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-var knexConfig = require('../knexfile').development
+var knexConfig = require('../knexfile')[process.env.NODE_ENV || 'development']
 var knex = require('knex')(knexConfig)
 
 var tableName = 'scenes'
