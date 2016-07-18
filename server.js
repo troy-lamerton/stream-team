@@ -18,6 +18,10 @@ var routesScenes = require('./routes/scenes')
 app.use('/app', routesApp)
 app.use('/scenes', routesScenes)
 
+const PORT = process.env.PORT || 3000
+
+app.use('port', port)
+
 var scenes = require(__dirname + '/scenesTest.json')
 /* Sockets handle the commands sent between the dashboard, display and the server */
 io.of('/dashboard').on('connection', function(socket){
@@ -43,7 +47,6 @@ io.of('/dashboard').on('connection', function(socket){
 });
 
 
-const PORT = process.env.PORT || 3000
 
 
 if (module.parent === null){
