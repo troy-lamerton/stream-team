@@ -1,7 +1,6 @@
 var express = require('express')
 var router = express.Router()
 
-var fs = require('fs')
 var knexConfig = require('../knexfile').development
 var knex = require('knex')(knexConfig)
 
@@ -27,7 +26,8 @@ router.get('/', function (req, res) {
 
 function sendScenes (res) {
   return function (scenes) {
-    res.send(scenes)
+    if(scenes.length < 1) res.status(404).end()
+    else res.send(scenes)
   }
 }
 
@@ -39,6 +39,13 @@ router.get('/:id', function (req, res) {
     .catch(logError, res)
     .finally(cleanUp)
   // res.send(thatOneScene)
+})
+
+
+router.get('/new', function (req, res) {
+  console.log('send back an html form -->')
+
+  res.status(404).end()
 })
 
 /* check the data is valid
@@ -53,21 +60,24 @@ router.post('/', function (req, res) {
   // res.send an error or OK (200)
 })
 
+
 /* check data is valid
 update specific scene with this data */
 router.put('/:id', function (req, res) {
   console.log('update scene with id:-->', req.params.id)
-  res.end()
+  res.status(503).end()
   // res.send an error or OK (200)
 })
+
 
 /* drop the specified scene row if it exists */
 router['delete']('/:id', function (req, res) {
   console.log('delete the scene with id:', req.params.id)
-  res.end()
+  res.status(503).end()
   // drop the specified scene row if it exists
   // res.send an error or OK (200)
 })
+
 
 function logError (err, res) {
   console.error(err)

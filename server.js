@@ -9,8 +9,6 @@ var http = require('http').Server(app);
 
 var io = require('socket.io')(http);
 
-// app.set('views', __dirname + '/views');
-// app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'))
 
 /* Routes */
@@ -19,7 +17,7 @@ var routesScenes = require('./routes/scenes')
 
 app.use('/app', routesApp)
 app.use('/scenes', routesScenes)
-console.log(__dirname + '/scenesTest.json')
+
 var scenes = require(__dirname + '/scenesTest.json')
 /* Sockets handle the commands sent between the dashboard, display and the server */
 io.of('/dashboard').on('connection', function(socket){
