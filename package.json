@@ -14,8 +14,8 @@
     "url": "git+https://github.com/troy-lamerton/stream-team.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "troy-lamerton",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/troy-lamerton/stream-team/issues"
   },
