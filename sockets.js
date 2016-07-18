@@ -13,11 +13,7 @@ io.of('/dashboard').on('connection', function(socket){
   socket.on('set background color', function (colorCode) {
     // check color code is valid
     if ( colorCode.slice(0,1) === "#" && (colorCode.length === 7 || colorCode.length === 4) ) {
-      console.log('Background color is valid')
       io.of('/').emit('update background color', colorCode)
-    } else {
-      console.error('Background color invalid')
-      return
-    }
+    } else return
   })
 });

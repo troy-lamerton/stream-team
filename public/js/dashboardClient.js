@@ -2,7 +2,6 @@
 var socket = io.connect("/dashboard")
 
 function newScene (sceneIndex) {
-  console.log('setting new scene: ', sceneIndex)
   socket.emit('set scene', sceneIndex)
 }
 
@@ -10,7 +9,6 @@ $( document ).ready(function () {
   $('#setBackgroundColor').click(function() {
     // this code is not running -- ???
     var colorCode = $('#backgroundColor').val();
-    console.log('Sending new background-color to server: ', colorCode);
     //colorCode will be in the form #______. e.g. #ffffff is white
     socket.emit('set background color', colorCode);
   });
