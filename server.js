@@ -18,9 +18,29 @@ var routesScenes = require('./routes/scenes')
 app.use('/app', routesApp)
 app.use('/scenes', routesScenes)
 
-const PORT = process.env.PORT || 3000
+var port = normalizePort(process.env.PORT || 3000)
 
-app.use('port', port)
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+app.set('port', port);
 
 var scenes = require(__dirname + '/scenesTest.json')
 /* Sockets handle the commands sent between the dashboard, display and the server */
@@ -50,8 +70,8 @@ io.of('/dashboard').on('connection', function(socket){
 
 
 if (module.parent === null){
-  http.listen(PORT)
-  console.log('Server is listening on http://localhost:' + PORT)
+  http.listen(port)
+  console.log('Server is listening on http://localhost:' + port)
 }
 
 /* http is the running server */
